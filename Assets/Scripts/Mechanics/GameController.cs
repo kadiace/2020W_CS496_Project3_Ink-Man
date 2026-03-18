@@ -20,9 +20,23 @@ namespace Platformer.Mechanics
         //conveniently configured inside the inspector.
         public PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
+        void EnsureModelReferences()
+        {
+            if (model == null)
+                model = Simulation.GetModel<PlatformerModel>();
+
+            if (model.player == null)
+            {
+                model.player = FindObjectOfType<PlayerController>();
+                if (model.player == null)
+                    Debug.LogWarning("PlatformerModel.player is not assigned and no PlayerController was found in scene.");
+            }
+        }
+
         void OnEnable()
         {
             Instance = this;
+            EnsureModelReferences();
         }
 
         void OnDisable()
@@ -32,7 +46,13 @@ namespace Platformer.Mechanics
 
         void Update()
         {
-            if (Instance == this) Simulation.Tick();
+            if (Instance == this)
+            {
+                if (model == null || model.player == null)
+                    EnsureModelReferences();
+
+                Simulation.Tick();
+            }
         }
     }
 }

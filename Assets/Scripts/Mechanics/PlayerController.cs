@@ -53,6 +53,9 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+
+            if (model.player == null)
+                model.player = this;
         }
 
         protected override void Start()

@@ -58,3 +58,19 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Unity user-specific settings
+/[Uu]ser[Ss]ettings/
+
+# Generated solution variants
+*.slnx
+
+# JetBrains Rider / IDE settings
+.idea/
+*.DotSettings.user
+
+# VS Code workspace-local settings
+.vscode/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
