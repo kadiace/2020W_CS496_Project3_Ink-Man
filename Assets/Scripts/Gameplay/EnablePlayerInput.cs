@@ -13,6 +13,9 @@ namespace Platformer.Gameplay
         public override void Execute()
         {
             var player = model.player;
+            if (player == null)
+                return;
+
             player.controlEnabled = true;
         }
     }

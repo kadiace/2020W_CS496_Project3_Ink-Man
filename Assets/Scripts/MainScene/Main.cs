@@ -1,14 +1,18 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
-    // Start is called before the first frame update
+    void OnEnable()
+    {
+        ApplyStageButtonVisibility();
+    }
+
     void Start()
     {
-        
+        ApplyStageButtonVisibility();
     }
 
     // Update is called once per frame
@@ -22,17 +26,44 @@ public class Main : MonoBehaviour
         Application.Quit();
     }
 
-    public void toTutorial()
+    void ApplyStageButtonVisibility()
     {
-        SceneManager.LoadScene("Stage_tutorial");
+        SetButtonVisible("Stage1Button", true);
+        SetButtonVisible("Stage2Button", StageProgress.IsStage1Cleared());
+        SetButtonVisible("Stage3Button", StageProgress.IsStage2Cleared());
     }
 
-    public void toStage1()
+    void SetButtonVisible(string objectName, bool visible)
     {
-        SceneManager.LoadScene("Stage1");
+        var button = GameObject.Find(objectName);
+        if (button != null)
+            button.SetActive(visible);
     }
-    public void toBoss()
+
+    public void ToStage1()
     {
-        SceneManager.LoadScene("Stage_boss");
+        LoadSceneIfAvailable("Stage1");
+    }
+
+    public void ToStage2()
+    {
+        if (!StageProgress.IsStage1Cleared())
+            return;
+
+        LoadSceneIfAvailable("Stage2");
+    }
+
+    public void ToStage3()
+    {
+        if (!StageProgress.IsStage2Cleared())
+            return;
+
+        LoadSceneIfAvailable("Stage3");
+    }
+
+    void LoadSceneIfAvailable(string sceneName)
+    {
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+            SceneManager.LoadScene(sceneName);
     }
 }

@@ -12,12 +12,13 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: 194a7c04e3509e14e9f6ec52653f0fef
   - enabled: 1
-    path: Assets/Scenes/Stage_tutorial.unity
+    path: Assets/Scenes/Stage1.unity
     guid: 06054c4687aa5a942ac0be11e5b051a7
   - enabled: 1
-    path: Assets/Scenes/Stage1.unity
+    path: Assets/Scenes/Stage2.unity
     guid: 8cd95d6b75699104995c22cc4851d5bf
   - enabled: 1
-    path: Assets/Scenes/Stage_boss.unity
+    path: Assets/Scenes/Stage3.unity
     guid: 2a28e171c303741478920285db740e94
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

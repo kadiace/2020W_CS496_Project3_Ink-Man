@@ -1,6 +1,8 @@
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Platformer.Gameplay
 {
@@ -21,10 +23,42 @@ namespace Platformer.Gameplay
             if (player == null)
                 return;
 
+            var currentSceneName = SceneManager.GetActiveScene().name;
+            StageProgress.MarkClearedForScene(currentSceneName);
+
             if (player.animator != null)
                 player.animator.SetTrigger("victory");
 
             player.controlEnabled = false;
+
+            var nextSceneName = ResolveNextSceneName(currentSceneName);
+            if (!string.IsNullOrEmpty(nextSceneName))
+            {
+                var loadEvent = Simulation.Schedule<LoadSceneByName>(1.2f);
+                loadEvent.sceneName = nextSceneName;
+            }
+        }
+
+        static string ResolveNextSceneName(string currentSceneName)
+        {
+            if (currentSceneName == "Stage1")
+                return GetFirstLoadableSceneName("Stage2", null);
+
+            if (currentSceneName == "Stage2")
+                return GetFirstLoadableSceneName("Stage3", null);
+
+            return null;
+        }
+
+        static string GetFirstLoadableSceneName(string primarySceneName, string fallbackSceneName)
+        {
+            if (Application.CanStreamedLevelBeLoaded(primarySceneName))
+                return primarySceneName;
+
+            if (!string.IsNullOrEmpty(fallbackSceneName) && Application.CanStreamedLevelBeLoaded(fallbackSceneName))
+                return fallbackSceneName;
+
+            return null;
         }
     }
 }

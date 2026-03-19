@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 4802946588773866630}
   - component: {fileID: 1940316931411490934}
   m_Layer: 5
-  m_Name: Stage4Button
+  m_Name: Stage3Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,7 +262,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1940316931411490934}
-        m_MethodName: toBoss
+        m_MethodName: ToStage3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -404,7 +404,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7386104120568534313}
-        m_MethodName: toTutorial
+        m_MethodName: ToStage1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -546,7 +546,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4808074956860286787}
-        m_MethodName: toStage1
+        m_MethodName: ToStage2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

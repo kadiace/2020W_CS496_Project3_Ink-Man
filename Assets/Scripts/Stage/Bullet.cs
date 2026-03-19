@@ -1,22 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Platformer.Gameplay;
-using Platformer.Model;
 using Platformer.Core;
+using Platformer.Mechanics;
 
 public class Bullet : MonoBehaviour
 {
-    Transform playerTransform;
     float deltaX = 0f;
     float xPosition;
     float yPosition;
-    GameObject bullet;
-    PlatformerModel model = Simulation.GetModel<PlatformerModel>();
     // Start is called before the first frame update
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         xPosition = transform.position.x;
         yPosition = transform.position.y;
         
@@ -41,24 +35,17 @@ public class Bullet : MonoBehaviour
         //{
         //    Destroy(collision.gameObject);
         //}
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            var player = model.player;
-            if (player.health.IsAlive)
-            {
-                player.health.Die();
-                model.virtualCamera.m_Follow = null;
-                model.virtualCamera.m_LookAt = null;
-                // player.collider.enabled = false;
-                player.controlEnabled = false;
+        if (collision.gameObject.GetComponent<PlayerController>() != null)
+            Simulation.Schedule<PlayerDeath>(0);
 
-                if (player.audioSource && player.ouchAudio)
-                    player.audioSource.PlayOneShot(player.ouchAudio);
-                player.animator.SetTrigger("hurt");
-                player.animator.SetBool("dead", true);
-                Simulation.Schedule<PlayerSpawn>(2);
-            }
-        }
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<PlayerController>() != null)
+            Simulation.Schedule<PlayerDeath>(0);
+
         Destroy(gameObject);
     }
 }

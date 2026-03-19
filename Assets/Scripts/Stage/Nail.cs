@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using Platformer.Model;
+using UnityEngine;
 using Platformer.Core;
+using Platformer.Mechanics;
+using Platformer.Gameplay;
 
 public class Nail : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Nail : MonoBehaviour
     float deltaY = 0f;
     float xPosition;
     float yPosition;
-    PlatformerModel model = Simulation.GetModel<PlatformerModel>();
     // Start is called before the first frame update
     void Start()
     {
@@ -36,5 +36,21 @@ public class Nail : MonoBehaviour
                 transform.position = new Vector3(xPosition, yPosition + deltaY, 0);
             }
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        TryKillPlayer(collider.gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        TryKillPlayer(collision.gameObject);
+    }
+
+    static void TryKillPlayer(GameObject hitObject)
+    {
+        if (hitObject.GetComponent<PlayerController>() != null)
+            Simulation.Schedule<PlayerDeath>(0);
     }
 }
