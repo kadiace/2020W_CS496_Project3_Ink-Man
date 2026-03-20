@@ -1,9 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using Platformer.Core;
+using Platformer.Model;
 using UnityEngine;
 
 public class damaged : MonoBehaviour
 {
+    bool bossClearTriggered;
+    PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,13 +26,38 @@ public class damaged : MonoBehaviour
             Destroy(collision.gameObject);
             Animator anim = GetComponentInParent<Animator>();
             anim.SetTrigger("isDamaged");
-            anim.SetInteger("life", anim.GetInteger("life")-1);
+            var nextLife = anim.GetInteger("life") - 1;
+            anim.SetInteger("life", nextLife);
             Debug.Log(anim.GetInteger("life"));
-            
+
+            if (!bossClearTriggered && nextLife <= 0)
+            {
+                bossClearTriggered = true;
+
+                var player = model.player;
+                if (player != null)
+                {
+                    player.controlEnabled = false;
+                    player.velocity = Vector2.zero;
+                    if (player.animator != null)
+                        player.animator.SetTrigger("victory");
+
+                    var playerBody = player.GetComponent<Rigidbody2D>();
+                    if (playerBody != null)
+                    {
+                        playerBody.linearVelocity = Vector2.zero;
+                        playerBody.gravityScale = 0;
+                    }
+                }
+
+                Simulation.Schedule<Platformer.Gameplay.ShowBossClearOverlay>(1.2f);
+            }
+             
         }
         //else if ()
         //{
 
         //}
     }
+
 }

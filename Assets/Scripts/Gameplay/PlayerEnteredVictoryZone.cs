@@ -36,6 +36,12 @@ namespace Platformer.Gameplay
             {
                 var loadEvent = Simulation.Schedule<LoadSceneByName>(1.2f);
                 loadEvent.sceneName = nextSceneName;
+                return;
+            }
+
+            if (currentSceneName == "Stage3" || currentSceneName == "Stage_boss")
+            {
+                Simulation.Schedule<ShowBossClearOverlay>(1.2f);
             }
         }
 
